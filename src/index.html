@@ -4,21 +4,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/render-fuctions.css"/>
+    <link rel="stylesheet" href="./css/pixabay-api.css" />
+    <link rel="stylesheet" href="./css/loader.css" />
+    <title>Homework_12</title>
   </head>
+
   <body>
-    <load ="partials/header.html" />
+    <form class="form_images">
+      <input class="input_searching" name="input_name" placeholder="Search images..."/>
+      <button type="submit" class="button_submit">Search</button>
+    </form>
 
-    <section>
-      <h1>Example page title</h1>
-      <!-- Path to images as from index.html file -->
-      <img src="./img/javascript.svg" alt="" />
-    </section>
+    <div class="box-downloaded-images">
+      <ul class="image-gallery"></ul>
 
-    <!-- Loads the specified .html file -->
-    <load ="partials/vite-promo.html" />
+      <div class="content">
+        <button class="load-button" type="button">Load more</button>
 
-    <script type="module" src="./main.js"></script>
+        <div class="container-loader">
+          <span class="loader"></span>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="./main.js" defer></script>
   </body>
 </html>
