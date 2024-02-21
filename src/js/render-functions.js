@@ -12,7 +12,7 @@ export async function renderImages(images, task) {
     
     const buttonLoad = document.querySelector(".load-button");
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     images.forEach(image => {
         cardHTML += `
