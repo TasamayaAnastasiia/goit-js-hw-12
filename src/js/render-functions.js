@@ -59,7 +59,7 @@ export async function renderImages(images, task) {
       captionsData: 'alt',
       captionDelay: 250,
     });
-    galleryImage.refresh();
+    await galleryImage.refresh();
 
     if (task)
     {

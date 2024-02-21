@@ -81,6 +81,7 @@ buttonLoad.addEventListener("click", (e) => {
     axios.get(`https://pixabay.com/api/?${searchParams.toString()}`)
         .then(response => { 
             if (response.data.totalHits <= amountImages * sumPage) {
+                loadingIndicator.style.display = 'none';
                 throw new Error("We're sorry, but you've reached the end of search results.");
             }
             return response.data;
