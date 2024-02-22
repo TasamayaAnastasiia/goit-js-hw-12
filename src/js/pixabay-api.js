@@ -12,32 +12,25 @@ const loadingIndicator = document.querySelector(".container-loader");
 const gallery = document.querySelector(".image-gallery");
 
 let searchParams;
-let searchQuery;
 let currentPage = 1;
-let amountImages;
 let sumPage = 0;
 
 
 formForSearching.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    searchQuery = inputSearch.value.trim();
-    inputSearch.value = '';
-
-    if (!searchQuery) {
+    if (!inputSearch.value.trim()) {
         iziToast.error({
             title: "Error",
             message: "Please enter a keyword for search",
         });
+        inputSearch.value = '';
         return;
     }
-    
-    gallery.innerHTML = '';
-    buttonLoad.style.display = 'none';
 
     searchParams = new URLSearchParams({
         key: "42360153-ab2745711a491af6a9cf29268",
-        q: searchQuery,
+        q: inputSearch.value.trim(),
         image_type: "photo",
         orientation: "horizontal",
         safesearch: true,
@@ -45,7 +38,9 @@ formForSearching.addEventListener("submit", async (e) => {
         per_page: 15,
     });
 
-    amountImages = searchParams.get("per_page");
+    inputSearch.value = '';    
+    gallery.innerHTML = '';
+    buttonLoad.style.display = 'none';
 
     try {
         const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
@@ -57,7 +52,8 @@ formForSearching.addEventListener("submit", async (e) => {
             throw new Error("No images found");
         }
         renderImages(data.hits, 0);
-        sumPage += 1;
+        sumPage = 1;
+        currentPage = 1;
     } catch (error) {
         iziToast.error({
             title: "Error",
@@ -78,7 +74,7 @@ buttonLoad.addEventListener("click", async (e) => {
     try {
         const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
         
-        if (response.data.totalHits <= amountImages * sumPage) {
+        if (response.data.totalHits <= searchParams.get("per_page") * sumPage) {
             loadingIndicator.style.display = 'none';
             throw new Error("We're sorry, but you've reached the end of search results.");
         }
