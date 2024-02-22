@@ -3,7 +3,7 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 let galleryImage = null;
 
-export async function renderImages(images, task) {
+export async function renderImages(images) {
     let gallery = document.querySelector(".image-gallery");
     let cardHTML = ``;
     
@@ -51,7 +51,7 @@ export async function renderImages(images, task) {
     buttonLoad.style.display = 'block';
 
     if (galleryImage) {
-        galleryImage.destroy();
+        await galleryImage.destroy();
     }
 
     galleryImage = new SimpleLightbox('.gallery-link', {
@@ -60,14 +60,4 @@ export async function renderImages(images, task) {
       captionDelay: 250,
     });
     await galleryImage.refresh();
-
-    if (task)
-    {
-        const imageCardHeight = document.querySelector('.image-card').getBoundingClientRect().height * 2;
-        
-        window.scrollBy({
-            top: imageCardHeight,
-            behavior: "smooth",
-        });
-    }
 }

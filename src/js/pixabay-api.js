@@ -51,7 +51,7 @@ formForSearching.addEventListener("submit", async (e) => {
         if (data.hits.length === 0) {
             throw new Error("No images found");
         }
-        renderImages(data.hits, 0);
+        renderImages(data.hits);
         sumPage = 1;
         currentPage = 1;
     } catch (error) {
@@ -80,7 +80,16 @@ buttonLoad.addEventListener("click", async (e) => {
         }
             
         const data = response.data;
-        renderImages(data.hits, 1);
+        // Ассинхронно вызывает функцию чтобы страница прокрутилась после загрузки новых карточек
+        await renderImages(data.hits);
+
+        const imageCardHeight = document.querySelector('.image-card').getBoundingClientRect().height * 2;
+        
+        window.scrollBy({
+            top: imageCardHeight,
+            behavior: "smooth",
+        });
+
         sumPage += 1;
     } catch (error) {
         iziToast.error({
