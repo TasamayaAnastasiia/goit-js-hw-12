@@ -82,12 +82,7 @@ buttonLoad.addEventListener("click", async (e) => {
             behavior: "smooth",
         });
     
-        if (currentPage === response.data.totalHits/searchParams.get('per_page')) {
-            console.log('currentPage = ' + currentPage); // должно быть больше или равно чем сумма деления тех двух
-            console.log('response.data.totalHits/searchParams.get(\'per_page\') = ' + response.data.totalHits/searchParams.get('per_page'));
-            console.log('response.data.totalHits = ' + response.data.totalHits); // всегда 44 (например 44)
-            console.log('searchParams.get(\'per_page\') = ' + searchParams.get('per_page')); // всегда 15
-
+        if (currentPage == Math.ceil(response.data.totalHits/searchParams.get('per_page'))) {
             loadingIndicator.style.display = 'none';
             buttonLoad.style.display = 'none';
             throw new Error("We're sorry, but you've reached the end of search results.");
