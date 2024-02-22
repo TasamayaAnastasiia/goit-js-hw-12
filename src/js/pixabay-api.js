@@ -72,22 +72,26 @@ buttonLoad.addEventListener("click", async (e) => {
 
     try {
         const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
-        
-        if (response.data.totalHits <= searchParams.get("per_page") * sumPage) {
-            loadingIndicator.style.display = 'none';
-            throw new Error("We're sorry, but you've reached the end of search results.");
-        }
-            
         const data = response.data;
         // Ассинхронно вызывает функцию чтобы страница прокрутилась после загрузки новых карточек
         await renderImages(data.hits);
 
         const imageCardHeight = document.querySelector('.image-card').getBoundingClientRect().height * 2;
-        
         window.scrollBy({
             top: imageCardHeight,
             behavior: "smooth",
         });
+    
+        if (currentPage === response.data.totalHits/searchParams.get('per_page')) {
+            console.log('currentPage = ' + currentPage); // должно быть больше или равно чем сумма деления тех двух
+            console.log('response.data.totalHits/searchParams.get(\'per_page\') = ' + response.data.totalHits/searchParams.get('per_page')); // всегда 15
+            console.log('response.data.totalHits = ' + response.data.totalHits); // всегда 44 (например 44)
+            console.log('searchParams.get(\'per_page\') = ' + searchParams.get('per_page'));
+
+            loadingIndicator.style.display = 'none';
+            buttonLoad.style.display = 'none';
+            throw new Error("We're sorry, but you've reached the end of search results.");
+        }
 
         sumPage += 1;
     } catch (error) {
