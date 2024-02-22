@@ -24,7 +24,6 @@ formForSearching.addEventListener("submit", async (e) => {
             title: "Error",
             message: "Please enter a keyword for search",
         });
-        inputSearch.value = '';
         return;
     }
 
