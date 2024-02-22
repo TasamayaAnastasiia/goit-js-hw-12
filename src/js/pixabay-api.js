@@ -84,9 +84,9 @@ buttonLoad.addEventListener("click", async (e) => {
     
         if (currentPage === response.data.totalHits/searchParams.get('per_page')) {
             console.log('currentPage = ' + currentPage); // должно быть больше или равно чем сумма деления тех двух
-            console.log('response.data.totalHits/searchParams.get(\'per_page\') = ' + response.data.totalHits/searchParams.get('per_page')); // всегда 15
+            console.log('response.data.totalHits/searchParams.get(\'per_page\') = ' + response.data.totalHits/searchParams.get('per_page'));
             console.log('response.data.totalHits = ' + response.data.totalHits); // всегда 44 (например 44)
-            console.log('searchParams.get(\'per_page\') = ' + searchParams.get('per_page'));
+            console.log('searchParams.get(\'per_page\') = ' + searchParams.get('per_page')); // всегда 15
 
             loadingIndicator.style.display = 'none';
             buttonLoad.style.display = 'none';
