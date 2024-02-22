@@ -18,7 +18,7 @@ let amountImages;
 let sumPage = 0;
 
 
-formForSearching.addEventListener("submit", (e) => {
+formForSearching.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     searchQuery = inputSearch.value.trim();
@@ -47,29 +47,26 @@ formForSearching.addEventListener("submit", (e) => {
 
     amountImages = searchParams.get("per_page");
 
-    axios.get(`https://pixabay.com/api/?${searchParams.toString()}`)
-        .then(response => {
-            if (response.status < 200 || response.status >= 300) {
-                throw new Error("Failed to fetch images");
-            }
-            return response.data;
-        })
-        .then(data => {
-            if (data.hits.length === 0) {
-                throw new Error("No images found");
-            }
-            renderImages(data.hits, 0);
-            sumPage += 1;
-        })
-        .catch(error => {
-            iziToast.error({
-                title: "Error",
-                message: error.message,
-            });
+    try {
+        const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error("Failed to fetch images");
+        }
+        const data = response.data;
+        if (data.hits.length === 0) {
+            throw new Error("No images found");
+        }
+        renderImages(data.hits, 0);
+        sumPage += 1;
+    } catch (error) {
+        iziToast.error({
+            title: "Error",
+            message: error.message,
         });
+    }
 });
 
-buttonLoad.addEventListener("click", (e) => {
+buttonLoad.addEventListener("click", async (e) => {
     e.preventDefault();
     
     buttonLoad.style.display = 'none';
@@ -78,22 +75,21 @@ buttonLoad.addEventListener("click", (e) => {
     currentPage++;
     searchParams.set('page', currentPage);
 
-    axios.get(`https://pixabay.com/api/?${searchParams.toString()}`)
-        .then(response => { 
-            if (response.data.totalHits <= amountImages * sumPage) {
-                loadingIndicator.style.display = 'none';
-                throw new Error("We're sorry, but you've reached the end of search results.");
-            }
-            return response.data;
-        })
-        .then(data => {
-            renderImages(data.hits, 1);
-            sumPage += 1;
-        })
-        .catch(error => {
-            iziToast.error({
-                title: "Error",
-                message: error.message,
-            });
+    try {
+        const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
+        
+        if (response.data.totalHits <= amountImages * sumPage) {
+            loadingIndicator.style.display = 'none';
+            throw new Error("We're sorry, but you've reached the end of search results.");
+        }
+            
+        const data = response.data;
+        renderImages(data.hits, 1);
+        sumPage += 1;
+    } catch (error) {
+        iziToast.error({
+            title: "Error",
+            message: error.message,
         });
+    }
 });
