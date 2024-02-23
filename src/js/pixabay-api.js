@@ -50,7 +50,12 @@ formForSearching.addEventListener("submit", async (e) => {
         if (data.hits.length === 0) {
             throw new Error("No images found");
         }
-        renderImages(data.hits);
+        await renderImages(data.hits);
+
+        if (response.data.totalHits <= searchParams.get('per_page')) {
+            buttonLoad.style.display = 'none';
+            throw new Error("We're sorry, but you've reached the end of search results.");
+        }
         sumPage = 1;
         currentPage = 1;
     } catch (error) {
@@ -73,7 +78,6 @@ buttonLoad.addEventListener("click", async (e) => {
     try {
         const response = await axios.get(`https://pixabay.com/api/?${searchParams.toString()}`);
         const data = response.data;
-        // Ассинхронно вызывает функцию чтобы страница прокрутилась после загрузки новых карточек
         await renderImages(data.hits);
 
         const imageCardHeight = document.querySelector('.image-card').getBoundingClientRect().height * 2;
